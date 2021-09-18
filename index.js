@@ -27,16 +27,14 @@ Toolkit.run(async (tools) => {
   await testCommand(`git status`);
   await testCommand(`git rev-list --tags --max-count=1`);
   await testCommand(`git branch --show-current`);
-  const tags = await execSync(`git tag -l`);
+  const tagsResults = await execSync(`git tag -l`);
+  const tags = tagsResults.toString().split(/\r?\n/);
   console.log(`Tags: ${typeof tags} ${tags}`);
   console.log(`1: ${tags.toString().split(',')}`);
   console.log(`2: ${tags.toString().split(/\r?\n/)}`);
-  const latestTag = tags
-    .toString()
-    .split(/\r?\n/)
-    .reduce((acc, item) => {
-      return acc > item ? item : acc;
-    }, tags[0]);
+  const latestTag = tagsResults.reduce((acc, item) => {
+    return acc > item ? item : acc;
+  }, tagsResults[0]);
   console.log(`Latest tag ${latestTag}`);
 
   // await testCommand(`git describe ${latestTagHash}`);
