@@ -13,7 +13,7 @@ Toolkit.run(async (tools) => {
     console.log(`Running command ${command}`);
     try {
       const result = await execSync(command);
-      console.log(`[${command}]: ${result}`)
+      console.log(`[${command}]: ${result}`);
     } catch (error) {
       console.error(`Unable to run ${command}`, error);
     }
@@ -27,7 +27,13 @@ Toolkit.run(async (tools) => {
   await testCommand(`git status`);
   await testCommand(`git rev-list --tags --max-count=1`);
   await testCommand(`git branch --show-current`);
-  await testCommand(`git tag -l`);
+  const tags = await execSync(`git branch --show-current`);
+  console.log(`Tags: ${typeof tags} ${tags}`);
+  const latestTag = tags.reduce((acc, item) => {
+    return acc > item ? item : acc;
+  }, tags[0]);
+  console.log(`Latest tag ${latestTag}`);
+
   // await testCommand(`git describe ${latestTagHash}`);
 
   return;
