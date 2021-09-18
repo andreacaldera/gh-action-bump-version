@@ -9,13 +9,13 @@ if (process.env.PACKAGEJSON_DIR) {
 
 // Run your GitHub Action!
 Toolkit.run(async (tools) => {
-  console.log(`Andrea's version of gh-action-bump-version`)
-  
+  console.log(`Andrea's version of gh-action-bump-version`);
+
   const pkg = tools.getPackageJSON();
-  console.log(`Current version is ${pkg.version}`)
-  const latestRelease = await tools.runInWorkspace(`git describe --tags $(git rev-list --tags --max-count=1)`);
-  console.log(`Latest release ${latestRelease}`)
-  return
+  console.log(`Current version is ${pkg.version}`);
+  const latestRelease = await tools.exec(`git describe --tags $(git rev-list --tags --max-count=1)`);
+  console.log(`Latest release ${latestRelease}`);
+  return;
   const event = tools.context.payload;
 
   if (!event.commits) {
@@ -112,8 +112,8 @@ Toolkit.run(async (tools) => {
   }
 
   // case: if user sets push to false, to skip pushing new tag/package.json
-  const push = process.env['INPUT_PUSH']
-  if ( push === "false" || push === false ) {
+  const push = process.env['INPUT_PUSH'];
+  if (push === 'false' || push === false) {
     tools.exit.success('User requested to skip pushing new tag and package.json. Finished.');
     return;
   }
