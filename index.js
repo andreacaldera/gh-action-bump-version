@@ -9,19 +9,25 @@ if (process.env.PACKAGEJSON_DIR) {
 
 // Run your GitHub Action!
 Toolkit.run(async (tools) => {
+  const testCommand = async (command) => {
+    console.log(`Running command ${command}`);
+    try {
+      const result = await execSync(command);
+    } catch (error) {
+      console.error(`Unable to run ${command}`, error);
+    }
+  };
+
   console.log(`Andrea's version of gh-action-bump-version`);
 
   const pkg = tools.getPackageJSON();
   console.log(`111Current version is ${pkg.version}`);
   // const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
-  const test = await execSync(`git status`);
-  console.log(`Test ${test}`);
-
-  const latestTagHash = await execSync(`git rev-list --tags --max-count=1`);
-  console.log(`Latest tag hash ${latestTagHash}`);
-
-  const latestTag = await execSync(`git describe ${latestTagHash}`);
-  console.log(`Latest tag ${latestTag}`);
+  await testCommand(`git status`);
+  await testCommand(`git rev-list --tags --max-count=1`);
+  await testCommand(`git branch --show-current`);
+  await testCommand(`git tag -l`);
+  // await testCommand(`git describe ${latestTagHash}`);
 
   return;
   const event = tools.context.payload;
