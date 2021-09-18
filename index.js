@@ -27,7 +27,7 @@ Toolkit.run(async (tools) => {
   await testCommand(`git status`);
   await testCommand(`git rev-list --tags --max-count=1`);
   await testCommand(`git branch --show-current`);
-  const tags = await execSync(`git branch --show-current`);
+  const tags = await execSync(`git tag -l`);
   console.log(`Tags: ${typeof tags} ${tags}`);
   const latestTag = tags.reduce((acc, item) => {
     return acc > item ? item : acc;
