@@ -28,7 +28,8 @@ Toolkit.run(async (tools) => {
   await testCommand(`git rev-list --tags --max-count=1`);
   await testCommand(`git branch --show-current`);
   const tags = await execSync(`git tag -l`);
-  console.log(`Tags: ${typeof tags} ${tags} ${JSON.stringify(tags, null, 2)}, ${tags.split(/\r?\n/)}`);
+  console.log(`Tags: ${typeof tags} ${tags} ${JSON.stringify(tags, null, 2)}`);
+  console.log(`Tags:  ${tags.toString().split(/\r?\n/)}`);
   const latestTag = tags
     .toString()
     .split('\n')

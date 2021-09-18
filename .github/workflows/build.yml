@@ -1,0 +1,38 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+env:
+  NODE_VERSION: '14.x'
+
+jobs:
+  build:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup NodeJs ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Write .npmrc
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > .npmrc 
+          echo "@DigitalInnovation:registry=https://npm.pkg.github.com" >> .npmrc    
+          
+      - name: Install dependencies
+        run: yarn
+
+      - name: "Automated Version Bump"
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish
+        run: npm publish 
