@@ -33,7 +33,7 @@ Toolkit.run(async (tools) => {
   console.log(`2: ${tags.toString().split(/\r?\n/)}`);
   const latestTag = tags
     .toString()
-    .split(',')
+    .split(/\r?\n/)
     .reduce((acc, item) => {
       return acc > item ? item : acc;
     }, tags[0]);
