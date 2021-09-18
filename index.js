@@ -29,7 +29,7 @@ Toolkit.run(async (tools) => {
   await testCommand(`git branch --show-current`);
   const tags = await execSync(`git tag -l`);
   console.log(`Tags: ${typeof tags} ${tags} ${JSON.stringify(tags, null, 2)}`);
-  console.log(`Tags:  ${tags.toString().split('.');
+  console.log(`Tags:  ${tags.toString().split('.'));
   const latestTag = tags
     .toString()
     .split(',')
