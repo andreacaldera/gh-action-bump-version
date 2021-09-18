@@ -12,8 +12,9 @@ Toolkit.run(async (tools) => {
   console.log(`Andrea's version of gh-action-bump-version`);
 
   const pkg = tools.getPackageJSON();
-  console.log(`Current version is ${pkg.version}`);
-  const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
+  console.log(`111Current version is ${pkg.version}`);
+  // const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
+  const latestRelease = await execSync(`git status`);
   console.log(`Latest release ${latestRelease}`);
   return;
   const event = tools.context.payload;
