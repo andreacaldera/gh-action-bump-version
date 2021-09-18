@@ -14,8 +14,15 @@ Toolkit.run(async (tools) => {
   const pkg = tools.getPackageJSON();
   console.log(`111Current version is ${pkg.version}`);
   // const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
-  const latestRelease = await execSync(`git status`);
-  console.log(`Latest release ${latestRelease}`);
+  const test = await execSync(`git status`);
+  console.log(`Test ${latestRelease}`);
+
+  const latestTagHash = await execSync(`git rev-list --tags --max-count=1`);
+  console.log(`Latest tag hash ${latestTagHash}`);
+
+  const latestTag = await execSync(`git describe ${latestTagHash}`);
+  console.log(`Latest tag ${latestTag}`);
+
   return;
   const event = tools.context.payload;
 
