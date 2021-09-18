@@ -26,8 +26,9 @@ Toolkit.run(async (tools) => {
   // const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
   const tagsResults = await execSync(`git tag -l`);
   const tags = tagsResults.toString().split(/\r?\n/);
-  console.log(`1: ${tags}`);
+  console.log(`1: ${tags} ${typeof tags}}`);
   console.log(`2: ${tagsResults} ${typeof tagsResults}`);
+  console.log(`3: ${tags.split(',')}`);
 
   const latestTag = tagsResults.reduce((acc, item) => {
     return acc > item ? item : acc;
