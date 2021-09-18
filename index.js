@@ -22,11 +22,8 @@ Toolkit.run(async (tools) => {
   console.log(`Andrea's version of gh-action-bump-version`);
 
   const pkg = tools.getPackageJSON();
-  console.log(`111Current version is ${pkg.version}`);
+  console.log(`2 Current version is ${pkg.version}`);
   // const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
-  await testCommand(`git status`);
-  await testCommand(`git rev-list --tags --max-count=1`);
-  await testCommand(`git branch --show-current`);
   const tagsResults = await execSync(`git tag -l`);
   const tags = tagsResults.toString().split(/\r?\n/);
   console.log(`Tags: ${typeof tags} ${tags}`);
