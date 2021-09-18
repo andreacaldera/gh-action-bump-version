@@ -10,6 +10,7 @@ if (process.env.PACKAGEJSON_DIR) {
 // Run your GitHub Action!
 Toolkit.run(async (tools) => {
   console.log(`Andrea's version of gh-action-bump-version`)
+  return
   const pkg = tools.getPackageJSON();
   const event = tools.context.payload;
 
