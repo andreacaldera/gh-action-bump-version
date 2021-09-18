@@ -28,11 +28,10 @@ Toolkit.run(async (tools) => {
   const tags = tagsResults.toString().split(/\r?\n/);
   console.log(`1: ${tags} ${typeof tags} ${Array.isArray(tags)}}`);
   console.log(`2: ${tagsResults} ${typeof tagsResults}`);
-  console.log(`3: ${tags.split(',')}`);
 
-  const latestTag = tagsResults.reduce((acc, item) => {
+  const latestTag = tags.reduce((acc, item) => {
     return acc > item ? item : acc;
-  }, tagsResults[0]);
+  }, tags[0]);
   console.log(`Latest tag ${latestTag}`);
 
   // await testCommand(`git describe ${latestTagHash}`);
