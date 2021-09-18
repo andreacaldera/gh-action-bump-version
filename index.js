@@ -25,13 +25,17 @@ Toolkit.run(async (tools) => {
   console.log(`2 Current version is ${pkg.version}`);
   // const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
   const tagsResults = await execSync(`git tag -l`);
-  const tags = tagsResults.toString().split(/\r?\n/);
+  const tags = tagsResults
+    .toString()
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
   console.log(`1: ${tags} ${typeof tags} ${Array.isArray(tags)}}`);
   console.log(`2: ${tagsResults} ${typeof tagsResults}`);
 
   const latestTag = tags.reduce((acc, item) => {
     console.log(111, acc, item, typeof item);
-    return acc > item ? item : acc;
+    return acc >= item ? item : acc;
   }, tags[0]);
   console.log(`Latest tag ${latestTag}`);
 
