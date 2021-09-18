@@ -29,9 +29,12 @@ Toolkit.run(async (tools) => {
   await testCommand(`git branch --show-current`);
   const tags = await execSync(`git tag -l`);
   console.log(`Tags: ${typeof tags} ${tags}`);
-  const latestTag = tags.reduce((acc, item) => {
-    return acc > item ? item : acc;
-  }, tags[0]);
+  const latestTag = tags
+    .toString()
+    .split('\n')
+    .reduce((acc, item) => {
+      return acc > item ? item : acc;
+    }, tags[0]);
   console.log(`Latest tag ${latestTag}`);
 
   // await testCommand(`git describe ${latestTagHash}`);
