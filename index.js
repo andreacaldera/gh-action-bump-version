@@ -30,6 +30,7 @@ Toolkit.run(async (tools) => {
   console.log(`2: ${tagsResults} ${typeof tagsResults}`);
 
   const latestTag = tags.reduce((acc, item) => {
+    console.log(111, acc, item, typeof item);
     return acc > item ? item : acc;
   }, tags[0]);
   console.log(`Latest tag ${latestTag}`);
