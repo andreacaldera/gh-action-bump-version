@@ -13,8 +13,8 @@ Toolkit.run(async (tools) => {
     console.log(`Running command [${command}]`);
     try {
       const result = await execSync(command);
-      console.log(`[${command}]: ${result}`);
-      return result;
+      console.log(`Result of command [${command}]: ${result}`);
+      return result?.toString();
     } catch (error) {
       console.error(`Unable to run [${command}]`, error);
     }
@@ -44,15 +44,14 @@ Toolkit.run(async (tools) => {
   const currentBranch = /refs\/[a-zA-Z]+\/(.*)/.exec(process.env.GITHUB_REF)[1];
   console.log(`Current branch ${currentBranch}`);
   const commits = await runCommand(`git log origin/main...${currentBranch} --oneline`);
-  console.log(111, commits, typeof commits);
-  if (commits.toString().indexOf('major') != -1) {
+  if (commits.includes('major')) {
     console.log('Major release');
   } else if (commits.includes('minor')) {
     console.log('Minor release');
   } else {
+    console.log('Patch release');
     await runCommand(`yarn version --path`);
     await runCommand(`git push origin ${currentBranch}`);
-    console.log('Patch release');
   }
 
   return;
