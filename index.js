@@ -40,7 +40,9 @@ Toolkit.run(async (tools) => {
 
   fs.writeFileSync('package.json', JSON.stringify({ ...pkg, version: latestTag }, null, 2));
   await runCommand(`git diff`);
-  const commits = await runCommand(`git log origin/main...$(git branch --show-current) --oneline --grep=major`);
+  const currentBranch = /refs\/[a-zA-Z]+\/(.*)/.exec(process.env.GITHUB_REF)[1];
+  console.log(`Current branch ${currentBranch} ${process.env.GITHUB_REF}`);
+  const commits = await runCommand(`git log origin/main...${currentBranch} --oneline --grep=major`);
   if (commits.includes('major')) {
     console.log('Major release');
   } else if (commits.includes('minor')) {
