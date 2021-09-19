@@ -1,5 +1,6 @@
 const { Toolkit } = require('actions-toolkit');
 const { execSync } = require('child_process');
+const fs = require('fs');
 
 // Change working directory if user defined PACKAGEJSON_DIR
 if (process.env.PACKAGEJSON_DIR) {
@@ -7,39 +8,38 @@ if (process.env.PACKAGEJSON_DIR) {
   process.chdir(process.env.GITHUB_WORKSPACE);
 }
 
-// Run your GitHub Action!
 Toolkit.run(async (tools) => {
-  const testCommand = async (command) => {
-    console.log(`Running command ${command}`);
+  const runCommand = async (command) => {
+    console.log(`Running command [${command}]`);
     try {
       const result = await execSync(command);
       console.log(`[${command}]: ${result}`);
     } catch (error) {
-      console.error(`Unable to run ${command}`, error);
+      console.error(`Unable to run [${command}]`, error);
     }
   };
 
   console.log(`Andrea's version of gh-action-bump-version`);
 
   const pkg = tools.getPackageJSON();
-  console.log(`2 Current version is ${pkg.version}`);
-  // const latestRelease = await execSync(`git describe --tags $(git rev-list --tags --max-count=1)`);
+  await runCommand(`git diff`);
+
+  console.log(`Current version is ${pkg.version}`);
+
   const tagsResults = await execSync(`git tag -l`);
   const tags = tagsResults
     .toString()
     .split(/\r?\n/)
     .map((s) => s.trim())
     .filter(Boolean);
-  console.log(`1: ${tags} ${typeof tags} ${Array.isArray(tags)}}`);
-  console.log(`2: ${tagsResults} ${typeof tagsResults}`);
 
   const latestTag = tags.reduce((acc, item) => {
-    console.log(111, acc, item, typeof item);
     return acc >= item ? acc : item;
   }, tags[0]);
   console.log(`Latest tag ${latestTag}`);
 
-  // await testCommand(`git describe ${latestTagHash}`);
+  writeFileSync('package.json', JSON.stringify({ ...pkg, version: latestTag }, null, 2));
+  await runCommand(`git diff`);
 
   return;
   const event = tools.context.payload;
