@@ -40,6 +40,14 @@ Toolkit.run(async (tools) => {
 
   fs.writeFileSync('package.json', JSON.stringify({ ...pkg, version: latestTag }, null, 2));
   await runCommand(`git diff`);
+  const commits = await runCommand(`git log origin/main...$(git branch --show-current) --oneline --grep=major`);
+  if (commits.includes('major')) {
+    console.log('Major release');
+  } else if (commits.includes('minor')) {
+    console.log('Minor release');
+  } else {
+    console.log('Patch release');
+  }
 
   return;
   const event = tools.context.payload;
