@@ -20,6 +20,17 @@ Toolkit.run(async (tools) => {
     }
   };
 
+  await tools.runInWorkspace('git', [
+    'config',
+    'user.name',
+    `"${process.env.GITHUB_USER || 'Automated Version Bump'}"`,
+  ]);
+  await tools.runInWorkspace('git', [
+    'config',
+    'user.email',
+    `"${process.env.GITHUB_EMAIL || 'gh-action-bump-version@users.noreply.github.com'}"`,
+  ]);
+
   const pkg = tools.getPackageJSON();
 
   console.log(`Current version is ${pkg.version}`);
