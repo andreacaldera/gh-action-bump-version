@@ -20,10 +20,7 @@ Toolkit.run(async (tools) => {
     }
   };
 
-  console.log(`Andrea's version of gh-action-bump-version`);
-
   const pkg = tools.getPackageJSON();
-  await runCommand(`git diff`);
 
   console.log(`Current version is ${pkg.version}`);
 
@@ -39,19 +36,21 @@ Toolkit.run(async (tools) => {
   }, tags[0]);
   console.log(`Latest tag ${latestTag}`);
 
+  const bumpVersion = async (releaseType) => {
+    console.log(`${releaseType} release`);
+    await runCommand(`yarn version --${releaseType}`);
+    await runCommand(`git push origin ${currentBranch}`);
+  };
+
   fs.writeFileSync('package.json', JSON.stringify({ ...pkg, version: latestTag }, null, 2));
-  await runCommand(`git diff`);
   const currentBranch = /refs\/[a-zA-Z]+\/(.*)/.exec(process.env.GITHUB_REF)[1];
-  console.log(`Current branch ${currentBranch}`);
   const commits = await runCommand(`git log origin/main...${currentBranch} --oneline`);
   if (commits.includes('major')) {
-    console.log('Major release');
+    await bumpVersion('major');
   } else if (commits.includes('minor')) {
-    console.log('Minor release');
+    await bumpVersion('minor');
   } else {
-    console.log('Patch release');
-    await runCommand(`yarn version --path`);
-    await runCommand(`git push origin ${currentBranch}`);
+    await bumpVersion('patch');
   }
 
   return;
