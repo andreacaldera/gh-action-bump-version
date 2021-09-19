@@ -14,6 +14,7 @@ Toolkit.run(async (tools) => {
     try {
       const result = await execSync(command);
       console.log(`[${command}]: ${result}`);
+      return result;
     } catch (error) {
       console.error(`Unable to run [${command}]`, error);
     }
