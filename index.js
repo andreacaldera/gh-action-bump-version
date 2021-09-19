@@ -38,7 +38,7 @@ Toolkit.run(async (tools) => {
   }, tags[0]);
   console.log(`Latest tag ${latestTag}`);
 
-  writeFileSync('package.json', JSON.stringify({ ...pkg, version: latestTag }, null, 2));
+  fs.writeFileSync('package.json', JSON.stringify({ ...pkg, version: latestTag }, null, 2));
   await runCommand(`git diff`);
 
   return;
